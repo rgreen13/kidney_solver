@@ -14,16 +14,15 @@ from . import kidney_ndds
 def solve_kep(cfg, formulation, use_relabelled=True):
 
     formulations = {
-        "uef":  ("Uncapped edge formulation", kidney_ip.optimise_uuef),
-        "eef": ("EEF", kidney_ip.optimise_eef),
-        "eef_full_red": ("EEF with full reduction by cycle generation", kidney_ip.optimise_eef_full_red),
-        "hpief_prime": ("HPIEF'", kidney_ip.optimise_hpief_prime),
-        "hpief_prime_full_red": ("HPIEF' with full reduction by cycle generation", kidney_ip.optimise_hpief_prime_full_red),
-        "hpief_2prime": ("HPIEF''", kidney_ip.optimise_hpief_2prime),
+        "uef":                   ("Uncapped edge formulation", kidney_ip.optimise_uuef),
+        "eef":                   ("EEF", kidney_ip.optimise_eef),
+        "eef_full_red":          ("EEF with full reduction by cycle generation", kidney_ip.optimise_eef_full_red),
+        "hpief_prime":           ("HPIEF'", kidney_ip.optimise_hpief_prime),
+        "hpief_prime_full_red":  ("HPIEF' with full reduction by cycle generation", kidney_ip.optimise_hpief_prime_full_red),
+        "hpief_2prime":          ("HPIEF''", kidney_ip.optimise_hpief_2prime),
         "hpief_2prime_full_red": ("HPIEF'' with full reduction by cycle generation", kidney_ip.optimise_hpief_2prime_full_red),
-        "picef": ("PICEF", kidney_ip.optimise_picef),
-        "cf":   ("Cycle formulation",
-                  kidney_ip.optimise_ccf)
+        "picef":                 ("PICEF", kidney_ip.optimise_picef),
+        "cf":                    ("Cycle formulation", kidney_ip.optimise_ccf)
     }
     
     if formulation in formulations:
@@ -76,6 +75,7 @@ def start():
     n_digraph_edges = int(input_lines[0].split()[1])
     digraph_lines = input_lines[:n_digraph_edges + 2]
 
+    # Read in Donor/Recipient pairs and NDDs differently
     d = kidney_digraph.read_digraph(digraph_lines)
 
     if len(input_lines) > len(digraph_lines):
@@ -97,11 +97,11 @@ def start():
     print(("chain_cap: {}".format(args.chain_cap)))
     print(("edge_success_prob: {}".format(args.edge_success_prob)))
     print(("ip_time_limit: {}".format(args.timelimit)))
-    print(("ip_vars: {}".format(opt_solution.ip_model.numVars)))
-    print(("ip_constrs: {}".format(opt_solution.ip_model.numConstrs)))
+    print(("ip_vars: {}".format(opt_solution.ip_model.getNVars())))
+    print(("ip_constrs: {}".format(opt_solution.ip_model.getNConss())))
     print(("total_time: {}".format(time_taken)))
-    print(("ip_solve_time: {}".format(opt_solution.ip_model.runtime)))
-    print(("solver_status: {}".format(opt_solution.ip_model.status)))
+    print(("ip_solve_time: {}".format(opt_solution.ip_model.getSolvingTime())))
+    print(("solver_status: {}".format(opt_solution.ip_model.getStatus())))
     print(("total_score: {}".format(opt_solution.total_score)))
     opt_solution.display()
 

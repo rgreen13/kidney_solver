@@ -110,12 +110,13 @@ def get_optimal_chains(digraph, ndds, edge_success_prob=1):
     chain_next_vv = {e.src.id: e.tgt.id
                         for e in digraph.es
                         for var in e.grb_vars
-                        if var.x > 0.1}
+                        if var.getObj() > 0.1}
         
     optimal_chains = []
     for i, ndd in enumerate(ndds):
         for e in ndd.edges:
-            if e.edge_var.x > 0.1:
+            # if e.edge_var.x > 0.1:
+            if e.edge_var.getObj() > 0.1:
                 vtx_indices = find_selected_path(e.target_v.id, chain_next_vv)
                 # Get score of edge from NDD
                 score = e.score * edge_success_prob
